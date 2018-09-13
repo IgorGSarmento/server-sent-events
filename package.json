@@ -12,11 +12,17 @@
   "bugs": {
     "url": "https://github.com/markbrown4/server-sent-events/issues"
   },
+  "scripts": {
+    "test": "node ./server.js",
+    "start": "./node_modules/forever/bin/forever -o log.txt start ./server.js",
+    "stop": "./node_modules/forever/bin/forever stop ./server.js"
+  },
   "homepage": "https://github.com/markbrown4/server-sent-events#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
     "cors": "^2.8.4",
     "express": "^4.13.4",
+    "forever": "^0.15.3",
     "sse": "0.0.6"
   }
 }

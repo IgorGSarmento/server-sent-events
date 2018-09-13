@@ -9,6 +9,8 @@ var alt = false;
 
 app.use(function(req, res, next) {
   res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Cache-control","no-cache");
+  res.setHeader('Content-Type', 'text/event-stream');
   res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
 });
@@ -18,7 +20,7 @@ app.use(express.static('public'));
 var server = http.createServer(app);
 var clients = [];
 
-server.listen(3000, '127.0.0.1', function() {
+server.listen(process.env.PORT || 3000, 'cache-devel-flash.ebc', function() {
   var sse = new SSE(server);
 
   sse.on('connection', function(stream) {
@@ -52,7 +54,7 @@ var broadcast = function() {
     console.log('Sent: ' + json.data);
   });
 }
-setInterval(broadcast, 2000)
+setInterval(broadcast, 10000)
 
 // can receive from the client with standard http and broadcast
 
@@ -68,6 +70,13 @@ app.post('/api', function(req, res) {
     stream.send(json);
     console.log('Sent: ' + json);
   });
-})
+});
+
+app.post('/close', function(req, res) {
+  res.status(200).end();
+  clients.forEach(function(stream) {
+    stream.close();
+  });
+});
 
 module.exports = app;

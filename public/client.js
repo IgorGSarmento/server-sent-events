@@ -1,4 +1,4 @@
-var stream = new EventSource("http://localhost:3000/sse");
+var stream = new EventSource("http://cache-devel-flash.ebc:3000/sse");
 
 stream.onopen = function() {
   log('Opened connection 🎉');
